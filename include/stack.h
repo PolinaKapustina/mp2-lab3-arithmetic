@@ -7,16 +7,20 @@
 // - получение количества элементов в стеке +
 // - очистка стека +
 // при вставке в полный стек должна перевыделяться память +
+#pragma once
+#include <iostream>
+#include <cstdlib>
+
 int MaxStackSize = 100;
 
 template <class T>
 class TStack
 {
 private:
-	T* stack;
 	int size;
+	int count;
 	int head;
-
+	T* stack;
 public:
 
 	TStack(int _size)
@@ -60,7 +64,7 @@ public:
 		{
 			throw "Stack is Empty";
 		}
-		return steak[head];
+		return stack[head];
 	}
 
 	int TStack<T>::Get() // получение количества элементов в стеке
