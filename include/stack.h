@@ -10,8 +10,7 @@
 #pragma once
 #include <iostream>
 #include <cstdlib>
-
-int MaxStackSize = 100;
+#define MaxStackSize 100
 
 template <class T>
 class TStack
@@ -56,7 +55,11 @@ public:
 		if (IsEmpty() == 1)
 			throw "Stack is Empty";
 		else
-			return stack[head--];
+		{
+			T result = stack[head--];
+			head--;
+			return result;
+		}
 	}
 	T TStack<T>::GetHeadElement() // Просмотр верхнего элемента без удалаения
 	{
