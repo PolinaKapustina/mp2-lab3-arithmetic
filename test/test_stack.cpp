@@ -1,5 +1,5 @@
 // тесты для стека
-
+#pragma once
 #include "stack.h"
 #include <gtest.h>
 #include "stack.h"

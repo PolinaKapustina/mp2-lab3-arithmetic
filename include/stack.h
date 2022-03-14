@@ -16,25 +16,28 @@ template <class T>
 class TStack
 {
 private:
-	int size;
-	int count;
-	int head;
+	int size; // размер стэка
+	int head; // верхний элемент стэка
+	int count; // количество элементов в стэке
 	T* stack;
 public:
 
-	TStack(int _size)
+	TStack(int size = 10) // - конструктор
 	{
-		if ((_size < 1) || (_size > MaxStackSize)) throw ("razmer");
-		head = -1;
-		size = _size;
-		stack = new T[size];
-	}
-	~TStack()
-	{
-		delete[] stack;
+		if (size <= 0 )
+		{
+			throw "negative or zero size";
+		}
+		else
+		{
+			stack = new T[size];
+			this->size = size;
+			count = 0;
+			head = -1;
+		}
 	}
 
-	bool TStack<T>::IsEmpty() // проверка на пустоту
+	bool IsEmpty() // - проверка на пустоту
 	{
 		if (head == -1)
 			return true;
@@ -42,7 +45,7 @@ public:
 			return false;
 	}
 
-	bool TStack<T>::IsFull() // - проверка на полноту
+	bool IsFull() // - проверка на полноту
 	{
 		if (head == (size - 1))
 			return true;
@@ -50,53 +53,58 @@ public:
 			return false;
 	}
 
-	T TStack<T>::Pop() // извлечение элемента
+	void Push(T& Elem) // - вставка элемента
 	{
-		if (IsEmpty() == 1)
-			throw "Stack is Empty";
+		if (IsFull())
+		{
+			stack = (T*)realloc(stack, (size + 1) * sizeof(T));
+		}
+		stack[++head] = Elem;
+		count++;
+	}
+
+	T Pop() // - извлечение элемента
+	{
+		if (IsEmpty())
+		{
+			throw "Can't pop out of empty stack";
+		}
 		else
 		{
 			T result = stack[head--];
-			head--;
+			count--;
 			return result;
 		}
 	}
-	T TStack<T>::GetHeadElement() // Просмотр верхнего элемента без удалаения
+
+	T GetHeadElement() // - просмотр верхнего элемента (без удаления)
 	{
-		if (IsEmpty()==1)
+		if (IsEmpty())
 		{
-			throw "Stack is Empty";
+			throw "stack is empty";
 		}
-		return stack[head];
-	}
-
-	int TStack<T>::Get() // получение количества элементов в стеке
-	{
-		return head++;
-	}
-
-	void Push(T elem) // вставка элемента
-	{
-		if (head + 1 == size)
+		else
 		{
-			size = size * 2;
-			T* temp = new T[size];
-			for (int i = 0; i < size/2; i++)
-				temp[i] = stack[i];
-			delete[] stack;
-			stack = temp;
+			return stack[head];
 		}
-		stack[head + 1] = elem;
-		head++;
 	}
 
-	void Clear() // очистка стека
+	int Get() // - получение количества элементов в стеке
+	{
+		return count;
+	}
+
+	void Clear() // - очистка стека
 	{
 		head = -1;
 		delete[] stack;
 		stack = new T[size];
 	}
 
+	~TStack() // - деструктор
+	{
+		delete[] stack;
+	}
 };
 
 
