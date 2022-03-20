@@ -24,7 +24,7 @@ public:
 
 	TStack(int size = 10) // - конструктор
 	{
-		if (size <= 0 )
+		if (size <= 0 || size >= MaxStackSize)
 		{
 			throw "negative or zero size";
 		}

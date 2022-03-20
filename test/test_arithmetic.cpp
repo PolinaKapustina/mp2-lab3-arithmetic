@@ -130,7 +130,7 @@ TEST(PolishNotation, can_multiply)
 
 TEST(PolishNotation, can_divide)
 {
-	double a, b = 2.0;
+	double a, b = 2;
 	std::string s = "2.2/1.1";
 	PolishNotation v(s);
 	v.TranslationToPolishNotation();
