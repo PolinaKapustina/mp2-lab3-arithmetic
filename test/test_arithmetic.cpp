@@ -108,8 +108,8 @@ TEST(PolishNotation, can_add)
 
 TEST(PolishNotation, can_subtract)
 {
-	double a, b = 0.12;
-	std::string s = "3.0-2.88";
+	double a, b = 0.5;
+	std::string s = "3-2.5";
 	PolishNotation v(s);
 	v.TranslationToPolishNotation();
 	a = v.PolishNotationCalculate();

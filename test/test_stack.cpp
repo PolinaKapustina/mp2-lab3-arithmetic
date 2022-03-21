@@ -32,7 +32,7 @@ TEST(TStack, can_push_elem_in_stack)
 	TStack <int> s(2);
 	int a = 5;
 	s.Push(a);
-	EXPECT_EQ(a, s.Get());
+	EXPECT_EQ(1, s.Get());
 }
 
 

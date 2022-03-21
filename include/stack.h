@@ -59,7 +59,8 @@ public:
 		{
 			stack = (T*)realloc(stack, (size + 1) * sizeof(T));
 		}
-		stack[++head] = Elem;
+		head++;
+		stack[head] = Elem;
 		count++;
 	}
 
