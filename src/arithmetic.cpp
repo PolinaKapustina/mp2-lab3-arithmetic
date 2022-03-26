@@ -12,61 +12,72 @@ PolishNotation::PolishNotation(string s)
 	formula = s;
 }
 
-void PolishNotation::CorrectionChecker(string s) // проверка корректности вводимого выражения
+void PolishNotation::CorrectionChecker(string s, vector <Lexem> l) // проверка корректности вводимого выражения
 {
 	int i = 0;
-	int last = s.length()-1;
+	int last = s.length() - 1;
 	int er = 0;
 	int open = 0, closed = 0; // переменные для работы со скобками
-	vector <int> opening(100); 
-	try {
+	vector <int> opening(100);
 	while (i < s.length())
 	{
-		
-			if ((s[i] != '+') && (s[i] != '-') && (s[i] != '/') && (s[i] != '*') && (s[i] != 'x') && (s[i] != '.') && (s[i] != 'y') && (s[i] != 'z') && (s[i] != '(') && (s[i] != ')') && ((s[i] < '0') || (s[i] > '9')))
+
+		if ((s[i] != '+') && (s[i] != '-') && (s[i] != '/') && (s[i] != '*') && (s[i] != 'x') && (s[i] != '.') && (s[i] != 'y') && (s[i] != 'z') && (s[i] != '(') && (s[i] != ')') && ((s[i] < '0') || (s[i] > '9')))
+		{
+			throw 1;
+		}
+
+
+		if (s[i] == '(')
+		{
+			open++;
+			opening.push_back(i);
+		}
+
+		if ((s[i] == ')') && (open == closed))
+		{
+			er = i + 1;
+			throw 2;
+		}
+
+		if ((s[i] == ')') && (open > closed))
+		{
+			closed++;
+			opening.pop_back();
+		}
+		i++;
+	}
+	if (open > closed)
+	{
+		throw 3;
+	}
+
+	for (unsigned int m = 0; m < l.size(); m++)
+	{
+		int c = 0;
+		for (i = 0; i < l[m].lexm.length(); i++)
+		{
+			if ((l[m].lexm[i] == '.') && (i == 0))
 			{
-				throw 1;
+				throw 6;
 			}
-
-
-			if (s[i] == '(')
+			if ((l[m].lexm[i] == '.') && (i == (l[m].lexm.length() - 1)))
 			{
-				open++;
-				opening.push_back(i);
+				throw 5;
 			}
-
-			if ((s[i] == ')') && (open == closed))
+			if (l[m].lexm[i] == '.')
 			{
-				er = i + 1;
-				throw 2;
+				c++;
 			}
-
-			if ((s[i] == ')') && (open > closed))
+			if (c > 1)
 			{
-				closed++;
-				opening.pop_back();
-			}
-
-			i++;
-
-
-			if (open > closed)
-			{
-				throw 3;
+				throw 4;
 			}
 		}
 	}
-	catch (int thr)
-	{
-		if (thr == 1)
-			cout << "Impossible expression are used!" << endl;
-		if (thr == 2)
-			cout << "Closing brackets more opening" << endl;
-		if (thr == 3)
-			cout << "Opening brackets more than closing brackets" << endl;
-		exit (EXIT_FAILURE);
-	}
 }
+		
+
 
 
 double PolishNotation::BinaryCalculate(double a, double b, string s)
@@ -98,12 +109,9 @@ double PolishNotation::BinaryCalculate(double a, double b, string s)
 
 void PolishNotation::TranslationToPolishNotation()
 {
-	CorrectionChecker(formula);
-
 	unsigned int i = 0;
 	int j = 0;
 	int k = 0;
-	
 	int xi = 0, yi = 0, zi = 0;
 	string xstr, ystr, zstr;
 
@@ -245,43 +253,26 @@ void PolishNotation::TranslationToPolishNotation()
 		i++;
 		j++;
 	}
-
-	for (unsigned int m = 0; m < l.size(); m++)
+	try
 	{
-		int c = 0;
-		try {
-		for (i = 0; i < l[m].lexm.length(); i++)
-		{
-			if ((l[m].lexm[i] == '.') && (i == 0))
-			{
-				throw 3;
-			}
-			if ((l[m].lexm[i] == '.') && (i == (l[m].lexm.length() - 1)))
-			{
-				throw 2;
-			}
-			if (l[m].lexm[i] == '.')
-			{
-				c++;
-			}
-			if (c > 1)
-			{
-				throw 1;
-			}
-			}
-		}
-		catch (int thr)
-		{
-			if (thr == 1)
-				cout << "Too many dots in a number" << endl;
-			if (thr == 2)
-				cout << "The dot cannot be the last character." << endl;
-			if (thr == 3)
-				cout << "The dot cannot be the first character." << endl;
-			exit(EXIT_FAILURE);
-		}
+		CorrectionChecker(formula, l);
 	}
-
+	catch (int thr)
+	{
+		if (thr == 1)
+			cout << "Impossible expression are used!" << endl;
+		if (thr == 2)
+			cout << "Closing brackets more opening" << endl;
+		if (thr == 3)
+			cout << "Opening brackets more than closing brackets" << endl;
+		if (thr == 4)
+			cout << "Too many dots in a number" << endl;
+		if (thr == 5)
+			cout << "The dot cannot be the last character." << endl;
+		if (thr == 6)
+			cout << "The dot cannot be the first character." << endl;
+		throw 0;
+	}
 	TStack <Lexem> st(l.size() + 1);
 	i = 0;
 	j = 0;

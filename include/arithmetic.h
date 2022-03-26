@@ -31,7 +31,7 @@ private:
 	vector <Lexem> l;
 public:
 	PolishNotation(string s); // конструктор
-	void CorrectionChecker(string s); // проверка корректности
+	void CorrectionChecker(string s, vector <Lexem> l); // проверка корректности
 	double BinaryCalculate(double a, double b, string s); // математические операции
 	void TranslationToPolishNotation(); // польсккая запись
 	void PrintPolishNotation(); // вывод польской записи
