@@ -18,7 +18,6 @@ int main()
 	double res;
 	string s;
 	int chet = 0;
-	PolishNotation v(0);
 	while (chet == 0)
 	{
 		chet = -1;
@@ -27,25 +26,19 @@ int main()
 		try
 		{
 			v.TranslationToPolishNotation();
+			v.PolishNotationCalculate();
 		}
 		catch (int)
 		{
 			cout << "The expression contains errors. Type it again." << endl;
 			chet = 0;
 		}
-		try
+		if (chet == -1)
 		{
-			v.PolishNotationCalculate();
-		}
-		catch (string str)
-		{
-			cout << str;
-			cout << "The expression contains errors. Type it again." << endl;
-			chet = 0;
+			cout << "Polish notation:" << endl;
+			v.PrintPolishNotation();
+			res = v.PolishNotationCalculate();
+			cout << endl << "Result:" << endl << res << endl;
 		}
 	}
-	cout << "Polish notation:" << endl;
-	v.PrintPolishNotation();
-	res = v.PolishNotationCalculate();
-	cout << endl << "Result:" << endl << res << endl;
 }

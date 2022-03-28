@@ -361,60 +361,67 @@ double PolishNotation::PolishNotationCalculate()
 	double result;
 	TStack <double> st(polish.size());
 	unsigned int i = 0;
-
-	while (i < polish.size())
-	{
-		if (polish[i].type == "operand")
+	try {
+		while (i < polish.size())
 		{
-			double k;
-			stringstream ss(polish[i].lexm);
-			ss >> k;
-			st.Push(k);
-		}
-
-		if ((polish[i].lexm == "-") && (polish[i].priority == 4))
-		{
-			if (st.IsEmpty())
+			if (polish[i].type == "operand")
 			{
-				throw "The problem is with the number of unary operators.";
+				double k;
+				stringstream ss(polish[i].lexm);
+				ss >> k;
+				st.Push(k);
 			}
-			double a = st.Pop();
-			double res = -a;
-			st.Push(res);
-		}
 
-		if ((polish[i].lexm == "+") || (polish[i].lexm == "*") || (polish[i].lexm == "/"))
-		{
-			if (st.Get() < 2)
+			if ((polish[i].lexm == "-") && (polish[i].priority == 4))
 			{
-				throw "The problem is with the number of unary operators.";
+				if (st.IsEmpty())
+				{
+					throw 8;
+				}
+				double a = st.Pop();
+				double res = -a;
+				st.Push(res);
 			}
-			double b = st.Pop();
-			double a = st.Pop();
-			double res = BinaryCalculate(a, b, polish[i].lexm);
-			st.Push(res);
-		}
 
-		if ((polish[i].lexm == "-") && (polish[i].priority == 2))
-		{
-			if (st.Get() < 2)
+			if ((polish[i].lexm == "+") || (polish[i].lexm == "*") || (polish[i].lexm == "/"))
 			{
-				throw "The problem is with the number of unary operators.";
+				if (st.Get() < 2)
+				{
+					throw 8;
+				}
+				double b = st.Pop();
+				double a = st.Pop();
+				double res = BinaryCalculate(a, b, polish[i].lexm);
+				st.Push(res);
 			}
-			double b = st.Pop();
-			double a = st.Pop();
-			double res = BinaryCalculate(a, b, polish[i].lexm);
-			st.Push(res);
+
+			if ((polish[i].lexm == "-") && (polish[i].priority == 2))
+			{
+				if (st.Get() < 2)
+				{
+					throw 8;
+				}
+				double b = st.Pop();
+				double a = st.Pop();
+				double res = BinaryCalculate(a, b, polish[i].lexm);
+				st.Push(res);
+			}
+
+			i++;
 		}
 
-		i++;
+		if (st.Get() > 1)
+		{
+			throw 7;
+		}
 	}
-
-	if (st.Get() > 1)
+	catch(int thr)
 	{
-		throw "Missing operation.";
+		if (thr == 7)
+			cout << "Missing operation.";
+		if (thr == 8)
+			cout << "The problem is with the number of unary operators.";
 	}
-
 	result = st.GetHeadElement();
 
 	return result;
