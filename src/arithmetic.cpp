@@ -421,6 +421,7 @@ double PolishNotation::PolishNotationCalculate()
 			cout << "Missing operation.";
 		if (thr == 8)
 			cout << "The problem is with the number of unary operators.";
+		throw 0;
 	}
 	result = st.GetHeadElement();
 
